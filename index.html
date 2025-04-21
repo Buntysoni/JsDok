@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JsDok Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            color: #2a6496;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .demo-box {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .drag-area {
+            border: 2px dashed #ccc;
+            height: 200px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .draggable {
+            width: 60px;
+            height: 60px;
+            background-color: #e74c3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .text-effect-demo {
+            font-size: 18px;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+
+        #word-cloud {
+            height: 300px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .info-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #2a6496;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            margin-left: 5px;
+            cursor: help;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        #start-tracking:disabled,
+        #stop-tracking:disabled {
+            cursor: none;
+            pointer-events: none;
+            background-color: #a7a7a7;
+        }
+
+        /* Smart Table Styles */
+        /* Update the existing smart table styles */
+
+        /* Smart Table Container */
+        .smart-table-wrapper {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        /* Controls Section */
+        .smart-table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .smart-table-search input {
+            min-width: 250px;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .smart-table-search input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .smart-table-page-size select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        /* Table Styling */
+        .smart-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .smart-table th,
+        .smart-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        /* Header Styling */
+        .smart-table thead th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .smart-table thead th:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Sort Icons */
+        .smart-table th.sortable {
+            padding-right: 25px;
+        }
+
+        .smart-table th.sortable::after {
+            content: "⇅";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.3;
+            font-size: 14px;
+        }
+
+        .smart-table th.sort-asc::after {
+            content: "↑";
+            opacity: 1;
+            color: #3b82f6;
+        }
+
+        .smart-table th.sort-desc::after {
+            content: "↓";
+            opacity: 1;
+            color: #3b82f6;
+        }
+
+        /* Row Styling */
+        .smart-table tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        .smart-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .row-odd {
+            background-color: #ffffff;
+        }
+
+        .row-even {
+            background-color: #f9fafb;
+        }
+
+        .row-selected {
+            background-color: #ebf5ff !important;
+            font-weight: 500;
+        }
+
+        /* Status Indicators */
+        .status-active {
+            color: #10b981;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .status-active::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-inactive {
+            color: #ef4444;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .status-inactive::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Pagination */
+        .smart-table-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #64748b;
+            min-width: 40px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .pagination-btn.active {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border-color: #3b82f6;
+        }
+
+        .pagination-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: #f1f5f9;
+        }
+
+        .pagination-ellipsis {
+            color: #64748b;
+            padding: 8px;
+        }
+
+        /* Info Section */
+        .smart-table-info {
+            margin-top: 15px;
+            text-align: right;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Serial Number Column */
+        .serial-number {
+            width: 50px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Loading State */
+        .table-loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .smart-table-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .smart-table-search input {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .smart-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .smart-table th,
+            .smart-table td {
+                white-space: nowrap;
+            }
+
+            .smart-table-pagination {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Score Indicators */
+        .low-score {
+            color: #ef4444;
+        }
+
+        .high-score {
+            color: #10b981;
+        }
+
+        /* Links in Table */
+        .smart-table a {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .smart-table a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JsDok Library Demo</h1>
+
+        <div class="section">
+            <h2>Basic DOM Manipulation</h2>
+            <div class="buttons">
+                <button id="add-element">Add Element</button>
+                <button id="change-text">Change Text</button>
+                <button id="toggle-visibility">Toggle Visibility</button>
+            </div>
+            <div id="basic-demo">This is a sample text that will be manipulated</div>
+        </div>
+
+        <div class="section">
+            <h2>Animation Effects</h2>
+            <div class="buttons">
+                <button id="fade-effect">Fade In/Out</button>
+                <button id="slide-effect">Slide Up/Down</button>
+                <button id="shake-effect">Shake</button>
+                <button id="pulse-effect">Pulse</button>
+                <button id="flip-effect">Flip</button>
+                <button id="bounce-effect">Bounce</button>
+            </div>
+            <div class="demo-box" id="animation-demo">
+                Effect Box
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Mouse Interaction</h2>
+            <div class="buttons">
+                <button id="tooltip-btn">Add Tooltip</button>
+                <button id="tilt-btn">Add Tilt Effect</button>
+                <button id="ripple-btn">Add Ripple Effect</button>
+                <button id="magnify-btn">Add Magnify Effect</button>
+            </div>
+            <div class="demo-box" id="interaction-demo">
+                Hover Me
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Draggable Elements</h2>
+            <div class="drag-area">
+                <div class="draggable" id="drag-element">Drag</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Text Effects</h2>
+            <div class="buttons">
+                <button id="typewriter-btn">Typewriter</button>
+                <button id="scramble-btn">Scramble</button>
+                <button id="rainbow-btn">Rainbow</button>
+                <button id="emojify-btn">Emojify</button>
+            </div>
+            <div class="text-effect-demo" id="text-demo">
+                This is a sample text for demonstrating special effects
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Progress and Loading</h2>
+            <div class="buttons">
+                <button id="progress-btn">Start Progress</button>
+                <button id="countdown-btn">Start Countdown</button>
+                <button id="confetti-btn">Confetti!</button>
+            </div>
+            <div id="progress-container" style="margin: 20px 0; height: 20px;"></div>
+            <div id="countdown-display" style="font-size: 24px; text-align: center;"></div>
+        </div>
+
+        <div class="section">
+            <h2>Word Cloud Generator</h2>
+            <textarea id="word-cloud-text"
+                style="width: 100%; height: 100px; margin-bottom: 10px;">JsDok is a lightweight alternative to jQuery with similar core functionality for DOM manipulation, event handling, Ajax requests, and animations, plus additional fun and interesting methods. It provides a great way to manipulate the Document Object Model, handle events, create animations, and make AJAX requests with a clean and concise syntax. The library includes many special effects like shake, pulse, tilt, typewriter, rainbow text, confetti explosions, and word clouds.</textarea>
+            <button id="generate-cloud">Generate Word Cloud</button>
+            <div id="word-cloud"></div>
+        </div>
+
+        <div class="section">
+            <h2>Ajax Example</h2>
+            <div class="buttons">
+                <button id="ajax-btn">Load Data</button>
+            </div>
+            <div id="ajax-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd; min-height: 50px;">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Form Handling</h2>
+            <div class="buttons">
+                <button id="submit-form">Submit Form</button>
+                <select id="reset-type" style="margin-right: 10px;">
+                    <option value="default">Reset to Default</option>
+                    <option value="blank">Blank All (Keep Hidden)</option>
+                    <option value="all">Blank All (Including Hidden)</option>
+                </select>
+                <button id="reset-form">Reset Form</button>
+            </div>
+            <form id="demo-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="johndoe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" name="role">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="newsletter" checked> Subscribe to newsletter
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="bio">Hello World</textarea>
+                </div>
+            </form>
+            <div id="form-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd;"></div>
+        </div>
+
+        <div class="section">
+            <h2>Storage Operations</h2>
+            <div class="buttons">
+                <button id="save-storage">Save to Storage</button>
+                <button id="load-storage">Load from Storage</button>
+                <button id="save-cookie">Save Cookie</button>
+                <button id="load-cookie">Load Cookie</button>
+                <button id="save-session">Save to Session</button>
+                <button id="load-session">Load from Session</button>
+            </div>
+            <div id="storage-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd;"></div>
+        </div>
+
+        <div class="section">
+            <h2>File to Base64 Conversion</h2>
+
+            <!-- Instance Method Demo -->
+            <div class="subsection">
+                <h3>Instance Method</h3>
+                <div class="form-group">
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
+                <div class="buttons">
+                    <button id="convert-file">Convert File</button>
+                </div>
+                <div id="conversion-progress" style="margin: 10px 0; display: none;">
+                    <div style="width: 100%; height: 20px; background: #eee; border-radius: 10px;">
+                        <div id="progress-bar"
+                            style="width: 0%; height: 100%; background: #2ecc71; border-radius: 10px; transition: width 0.3s;">
+                        </div>
+                    </div>
+                    <div id="progress-text" style="text-align: center; margin-top: 5px;">0%</div>
+                </div>
+                <div id="file-result" style="margin-top: 15px;">
+                    <div id="file-info"></div>
+                    <div id="file-preview" style="margin-top: 10px; max-width: 300px;"></div>
+                </div>
+            </div>
+
+            <!-- Static Method Demo -->
+            <div class="subsection">
+                <h3>Static Method (Drag & Drop)</h3>
+                <div id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; margin: 15px 0;">
+                    Drag and drop a file here
+                </div>
+                <div id="static-result"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>IndexedDB Operations</h2>
+            <div class="buttons">
+                <button id="init-db">Initialize DB</button>
+                <button id="add-record">Add Record</button>
+                <button id="get-records">Get All Records</button>
+                <button id="update-record">Update Record</button>
+                <button id="delete-record">Delete Record</button>
+            </div>
+            <div id="db-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd;"></div>
+        </div>
+
+        <div class="section">
+            <h2>Advanced Features Demo</h2>
+
+            <!-- Virtual DOM Demo -->
+            <div class="subsection">
+                <h3>Virtual DOM Updates</h3>
+                <div class="buttons">
+                    <button id="vdom-update">Full Update</button>
+                    <button id="vdom-patch">Patch Update</button>
+                </div>
+                <div id="vdom-demo">
+                    <div class="updated-content">
+                        <h4>Initial Content</h4>
+                        <p>This will be updated using Virtual DOM</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State Management -->
+            <div class="subsection">
+                <h3>State Management</h3>
+                <div class="buttons">
+                    <button id="increment">Increment</button>
+                    <button id="decrement">Decrement</button>
+                    <button id="reset-state">Reset</button>
+                </div>
+                <div id="state-display">Count: 0</div>
+            </div>
+
+            <!-- Spring Animation -->
+            <div class="subsection">
+                <h3>Physics-based Animations</h3>
+                <div class="buttons">
+                    <button id="spring-animate">Spring Animation</button>
+                    <button id="bounce-physics">Bouncy Motion</button>
+                </div>
+                <div id="physics-demo" class="demo-box">Physics Box</div>
+            </div>
+
+            <!-- Real-time Updates -->
+            <div class="subsection">
+                <h3>WebSocket Demo</h3>
+                <div class="buttons">
+                    <button id="ws-connect">Connect</button>
+                    <button id="ws-send">Send Message</button>
+                    <button id="ws-disconnect">Disconnect</button>
+                </div>
+                <div id="ws-messages"
+                    style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;"></div>
+            </div>
+
+            <!-- User Activity Tracking -->
+            <div class="subsection">
+                <h3>User Activity Tracking</h3>
+                <div class="buttons">
+                    <button id="start-tracking">Start Tracking</button>
+                    <button id="stop-tracking" disabled>Stop Tracking</button>
+                    <select id="summary-interval">
+                        <option value="10000">10 Seconds</option>
+                        <option value="30000">30 Seconds</option>
+                        <option value="60000">1 Minute</option>
+                        <option value="300000">5 Minutes</option>
+                    </select>
+                </div>
+                <div id="tracking-stats" style="margin-top: 15px;">
+                    <div class="stat-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                        <div class="stat-box" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            <h4>Current Session</h4>
+                            <ul id="live-stats" style="list-style: none; padding: 0;">
+                                <li>Screen Time: <span id="screen-time">0s</span></li>
+                                <li>Mouse Clicks: <span id="mouse-clicks">0</span></li>
+                                <li>Key Presses: <span id="key-presses">0</span></li>
+                                <li>Scroll Events: <span id="scroll-events">0</span></li>
+                            </ul>
+                        </div>
+                        <div class="stat-box" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            <h4>Status</h4>
+                            <ul id="status-stats" style="list-style: none; padding: 0;">
+                                <li>Tab Focus: <span id="tab-status">Active</span></li>
+                                <li>Last Active: <span id="last-active">Now</span></li>
+                                <li>Blur Events: <span id="blur-count">0</span></li>
+                                <li>Idle Time: <span id="idle-time">0s</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="activity-log"
+                        style="margin-top: 15px; max-height: 200px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h4>Activity Log</h4>
+                        <div id="log-entries"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Smart Table Demo</h2>
+            <div id="smartTableDemo"></div>
+        </div>
+    </div>
+
+    <!-- Include JsDok library -->
+    <script src="jsdok.js"></script>
+
+    <!-- Demo script -->
+    <script>
+        $(function () {
+            // Basic DOM Manipulation
+            $('#add-element').click(function () {
+                $('#basic-demo').append('<p>New paragraph added!</p>');
+            });
+
+            $('#change-text').click(function () {
+                $('#basic-demo').text('Text has been changed using JsDok!');
+            });
+
+            $('#toggle-visibility').click(function () {
+                $('#basic-demo').toggle();
+            });
+
+            // Animation Effects
+            let fadeState = true;
+            $('#fade-effect').click(function () {
+                if (fadeState) {
+                    $('#animation-demo').fadeOut();
+                } else {
+                    $('#animation-demo').fadeIn();
+                }
+                fadeState = !fadeState;
+            });
+
+            let slideState = true;
+            $('#slide-effect').click(function () {
+                if (slideState) {
+                    $('#animation-demo').slideUp();
+                } else {
+                    $('#animation-demo').slideDown();
+                }
+                slideState = !slideState;
+            });
+
+            $('#shake-effect').click(function () {
+                $('#animation-demo').shake();
+            });
+
+            $('#pulse-effect').click(function () {
+                $('#animation-demo').pulse();
+            });
+
+            $('#flip-effect').click(function () {
+                $('#animation-demo').flip();
+            });
+
+            $('#bounce-effect').click(function () {
+                $('#animation-demo').bounce();
+            });
+
+            // Mouse Interaction
+            $('#tooltip-btn').click(function () {
+                $('#interaction-demo').smartTooltip('This is a smart tooltip that follows your cursor and avoids screen edges');
+            });
+
+            $('#tilt-btn').click(function () {
+                $('#interaction-demo').tilt();
+            });
+
+            $('#ripple-btn').click(function () {
+                $('#interaction-demo').ripple();
+            });
+
+            $('#magnify-btn').click(function () {
+                $('#interaction-demo').magnify();
+            });
+
+            // Draggable
+            $('#drag-element').draggable('parent');
+
+            // Text Effects
+            $('#typewriter-btn').click(function () {
+                $('#text-demo').typewriter('This text is being typed one character at a time using the typewriter effect!');
+            });
+
+            $('#scramble-btn').click(function () {
+                $('#text-demo').scramble('Text scrambled and then resolved to this message!');
+            });
+
+            let rainbowActive = false;
+            $('#rainbow-btn').click(function () {
+                if (rainbowActive) {
+                    $('#text-demo').stopRainbow();
+                    $(this).text('Rainbow');
+                } else {
+                    $('#text-demo').rainbow();
+                    $(this).text('Stop Rainbow');
+                }
+                rainbowActive = !rainbowActive;
+            });
+
+            $('#emojify-btn').click(function () {
+                $('#text-demo').text('I am happy and I love cats! thumbs up if you agree. sad if you don\'t.').emojify();
+            });
+
+            // Progress and Loading
+            $('#progress-btn').click(function () {
+                let progress = 0;
+                $('#progress-container').progressBar(progress, {
+                    fillColor: '#2ecc71'
+                });
+
+                const interval = setInterval(function () {
+                    progress += 5;
+                    $('#progress-container').updateProgress(progress);
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 200);
+            });
+
+            $('#countdown-btn').click(function () {
+                $('#countdown-display').countdown(10, function () {
+                    $('#countdown-display').text('Countdown complete!');
+                    setTimeout(() => $('#countdown-display').text(''), 2000);
+                });
+            });
+
+            $('#confetti-btn').click(function () {
+                $(this).confetti(100);
+            });
+
+            // Word Cloud
+            $('#generate-cloud').click(function () {
+                const text = $('#word-cloud-text').val();
+                $('#word-cloud').html(text).wordCloud({
+                    maxWords: 40,
+                    colors: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6']
+                });
+            });
+
+            // Ajax Example
+            $('#ajax-btn').click(function () {
+                $('#ajax-result').html('Loading data...');
+
+                $.net({
+                    url: 'https://jsonplaceholder.typicode.com/todos/1',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#ajax-result').html(`
+                            <strong>Data loaded successfully!</strong><br>
+                            Title: ${data.title}<br>
+                            Completed: ${data.completed ? 'Yes' : 'No'}
+                        `);
+                    },
+                    error: function () {
+                        $('#ajax-result').html('Error loading data. Please try again.');
+                    }
+                });
+            });
+
+            // Form Handling
+            $('#submit-form').click(function () {
+                const formData = $('#demo-form').serializeForm();
+                $('#form-result').html('<pre>' + JSON.stringify(formData, null, 2) + '</pre>');
+            });
+
+            $('#reset-form').click(function () {
+                // Add dropdown for reset options
+                const resetType = $('#reset-type').val();
+                switch (resetType) {
+                    case 'default':
+                        $('#demo-form').resetForm();
+                        break;
+                    case 'blank':
+                        $('#demo-form').resetForm(false, true);
+                        break;
+                    case 'all':
+                        $('#demo-form').resetForm(true, true);
+                        break;
+                }
+                $('#form-result').html('');
+            });
+
+            // Storage Operations
+            $('#save-storage').click(function () {
+                const data = {
+                    theme: 'dark',
+                    fontSize: '16px',
+                    lastVisit: new Date().toISOString()
+                };
+                $.setStorage('demo-data', data);
+                $('#storage-result').html('Data saved to localStorage');
+            });
+
+            $('#load-storage').click(function () {
+                const data = $.getStorage('demo-data');
+                $('#storage-result').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            });
+
+            $('#save-cookie').click(function () {
+                $.setCookie('demo-cookie', 'Hello from cookie!', 7);
+                $('#storage-result').html('Cookie saved (expires in 7 days)');
+            });
+
+            $('#load-cookie').click(function () {
+                const cookieValue = $.getCookie('demo-cookie');
+                $('#storage-result').html('Cookie value: ' + cookieValue);
+            });
+
+            $('#save-session').click(function () {
+                $.setSession('demo-session', {
+                    id: 1,
+                    timestamp: new Date().toISOString()
+                });
+                $('#storage-result').html('Data saved to sessionStorage');
+            });
+
+            $('#load-session').click(function () {
+                const data = $.getSession('demo-session');
+                $('#storage-result').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            });
+
+            // File to Base64 Conversion
+            $('#convert-file').click(function () {
+                const fileInput = $('#file-input');
+                const progressContainer = $('#conversion-progress');
+                const progressBar = $('#progress-bar');
+                const progressText = $('#progress-text');
+                const fileInfo = $('#file-info');
+                const filePreview = $('#file-preview');
+
+                progressContainer.show();
+                fileInfo.empty();
+                filePreview.empty();
+
+                fileInput.toBase64({
+                    onProgress: (progress) => {
+                        progressBar.css('width', `${progress}%`);
+                        progressText.text(`${Math.round(progress)}%`);
+                    },
+                    onComplete: (base64) => {
+                        progressContainer.hide();
+                    },
+                    onError: (error) => {
+                        fileInfo.html(`<div style="color: #e74c3c;">Error: ${error.message}</div>`);
+                        progressContainer.hide();
+                    }
+                }).then(result => {
+                    fileInfo.html(`
+                        <div style="margin-bottom: 10px;">
+                            <strong>File Converted Successfully</strong><br>
+                            Name: ${result.filename}<br>
+                            Size: ${(result.filesize / 1024).toFixed(2)} KB<br>
+                            Type: ${result.filetype}
+                        </div>
+                        <div style="word-break: break-all;">
+                            <strong>Base64 Preview (first 100 chars):</strong><br>
+                            ${result.base64.substring(0, 100)}...
+                        </div>
+                    `);
+
+                    // If it's an image, show preview
+                    if (result.filetype.startsWith('image/')) {
+                        filePreview.html(`<img src="${result.base64}" style="max-width: 100%;">`);
+                    }
+                }).catch(error => {
+                    fileInfo.html(`<div style="color: #e74c3c;">Error: ${error.message}</div>`);
+                });
+            });
+
+            // Drag & Drop Static Method Demo
+            const dropZone = $('#drop-zone')[0];
+            const staticResult = $('#static-result');
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = '#f8f9fa';
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.style.backgroundColor = '';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = '';
+
+                const file = e.dataTransfer.files[0];
+                if (!file) return;
+
+                staticResult.html('<div>Converting...</div>');
+
+                $.fileToBase64(file)
+                    .then(base64String => {
+                        staticResult.html(`
+                            <div style="margin: 10px 0;">
+                                <strong>File Converted (Static Method)</strong><br>
+                                Name: ${file.name}<br>
+                                Size: ${(file.size / 1024).toFixed(2)} KB<br>
+                                Type: ${file.type}
+                            </div>
+                            <div style="word-break: break-all;">
+                                <strong>Base64 Preview:</strong><br>
+                                ${base64String.substring(0, 100)}...
+                            </div>
+                            ${file.type.startsWith('image/') ?
+                                `<img src="${base64String}" style="max-width: 300px; margin-top: 10px;">` :
+                                ''}
+                        `);
+                    })
+                    .catch(error => {
+                        staticResult.html(`<div style="color: #e74c3c;">Error: ${error.message}</div>`);
+                    });
+            });
+
+            // IndexedDB Operations
+            $('#init-db').click(async function () {
+                try {
+                    const db = await $.openDB('demoDB', 'users');
+                    $('#db-result').html('Database initialized successfully');
+                } catch (error) {
+                    $('#db-result').html('Error initializing database: ' + error.message);
+                }
+            });
+
+            $('#add-record').click(async function () {
+                try {
+                    const user = {
+                        name: 'John Doe',
+                        email: 'john@example.com',
+                        createdAt: new Date().toISOString()
+                    };
+                    await $.saveManyToDB('demoDB', 'users', [user]);
+                    $('#db-result').html('Record added successfully');
+                } catch (error) {
+                    $('#db-result').html('Error adding record: ' + error.message);
+                }
+            });
+
+            $('#get-records').click(async function () {
+                try {
+                    const users = await $.getAllFromDB('demoDB', 'users');
+                    $('#db-result').html('<pre>' + JSON.stringify(users, null, 2) + '</pre>');
+                } catch (error) {
+                    $('#db-result').html('Error getting records: ' + error.message);
+                }
+            });
+
+            $('#update-record').click(async function () {
+                try {
+                    const users = await $.getAllFromDB('demoDB', 'users');
+                    if (users.length > 0) {
+                        const user = users[0];
+                        user.name = 'John Updated';
+                        await $.updateInDB('demoDB', 'users', user);
+                        $('#db-result').html('Record updated successfully');
+                    } else {
+                        $('#db-result').html('No records to update');
+                    }
+                } catch (error) {
+                    $('#db-result').html('Error updating record: ' + error.message);
+                }
+            });
+
+            $('#delete-record').click(async function () {
+                try {
+                    const users = await $.getAllFromDB('demoDB', 'users');
+                    if (users.length > 0) {
+                        await $.deleteFromDB('demoDB', 'users', users[0].id);
+                        $('#db-result').html('Record deleted successfully');
+                    } else {
+                        $('#db-result').html('No records to delete');
+                    }
+                } catch (error) {
+                    $('#db-result').html('Error deleting record: ' + error.message);
+                }
+            });
+
+            // Add info tooltips
+            $('.section h2').each(function () {
+                $(this).append('<span class="info-icon" title="Click buttons below to see demos">?</span>');
+            });
+
+            $('.info-icon').smartTooltip('Click the buttons below to see demonstrations');
+
+            // Virtual DOM Demo
+            $('#vdom-update').click(function () {
+                const template = `
+                    <div class="updated-content">
+                        <h4>Updated at: ${new Date().toLocaleTimeString()}</h4>
+                        <p>This content was updated using Virtual DOM</p>
+                    </div>
+                `;
+
+                // Just use patch directly
+                $('#vdom-demo').patch(template);
+            });
+
+            $('#vdom-patch').click(function () {
+                const currentTime = new Date().toLocaleTimeString();
+                const patch = $('#vdom-demo').find('h4').text(`Updated at: ${currentTime}`);
+            });
+
+            // State Management Demo
+            $('#state-display').createState({
+                count: 0
+            }).getStateManager().subscribe(state => {
+                $('#state-display').text(`Count: ${state.count}`);
+            });
+
+            $('#increment').click(function () {
+                $('#state-display').getStateManager().setState(state => ({
+                    count: state.count + 1
+                }));
+            });
+
+            $('#decrement').click(function () {
+                $('#state-display').getStateManager().setState(state => ({
+                    count: state.count - 1
+                }));
+            });
+
+            $('#reset-state').click(function () {
+                $('#state-display').getStateManager().setState({ count: 0 });
+            });
+
+            // Physics Animation Demo
+            $('#spring-animate').click(function () {
+                $('#physics-demo').springAnimation({
+                    left: Math.random() * 300,
+                    top: Math.random() * 100
+                }, {
+                    stiffness: 0.1,
+                    damping: 0.8,
+                    duration: 2000
+                });
+            });
+
+            $('#bounce-physics').click(function () {
+                $('#physics-demo').springAnimation({
+                    top: window.innerHeight - 200
+                }, {
+                    stiffness: 0.2,
+                    damping: 0.5,
+                    duration: 3000
+                });
+            });
+
+            // WebSocket Demo
+            const wsDemo = $('#ws-messages').websocket('wss://echo.websocket.org', {
+                reconnectAttempts: 3,
+                reconnectDelay: 1000,
+                onOpen: () => {
+                    $('#ws-messages').append('<p class="success">Connected to WebSocket</p>');
+                },
+                onMessage: (event) => {
+                    $('#ws-messages').append(`<p>Received: ${event.data}</p>`);
+                },
+                onClose: () => {
+                    $('#ws-messages').append('<p class="error">Disconnected from WebSocket</p>');
+                },
+                onError: (error) => {
+                    $('#ws-messages').append(`<p class="error">Error: ${error.message}</p>`);
+                }
+            });
+
+            $('#ws-connect').click(function () {
+                wsDemo._ws.connect();
+            });
+
+            $('#ws-send').click(function () {
+                wsDemo._ws.send({
+                    message: 'Hello WebSocket!',
+                    timestamp: new Date().toISOString()
+                });
+            });
+
+            $('#ws-disconnect').click(function () {
+                wsDemo._ws.close();
+            });
+
+            // User Activity Tracking Demo
+            let activityTracker = null;
+
+            function getActivityLevel(summary) {
+                const totalActions = (summary.mouseClicks || 0) +
+                    (summary.keystrokes || 0) +
+                    (summary.scrollEvents || 0);
+                if (totalActions > 100) return 'High Activity 🏃';
+                if (totalActions > 50) return 'Medium Activity 👨‍💻';
+                return 'Low Activity 😴';
+            }
+
+            function formatTimeAgo(timestamp) {
+                if (!timestamp) return 'Just now';
+                const seconds = Math.floor((Date.now() - timestamp) / 1000);
+                if (seconds < 60) return 'Just now';
+                if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+                return `${Math.floor(seconds / 3600)}h ago`;
+            }
+
+            function initializeTrackingButtons() {
+                // Set initial button states
+                $('#start-tracking').prop('disabled', false);
+                $('#stop-tracking').prop('disabled', true);
+                $('#summary-interval').prop('disabled', false);
+            }
+            initializeTrackingButtons();
+            function updateTrackingUI(summary) {
+                // Update live stats
+                $('#screen-time').text(summary.screenTimeFormatted || '0s');
+                $('#mouse-clicks').text(summary.mouseClicks || 0);
+                $('#key-presses').text(summary.keystrokes || 0);
+                $('#scroll-events').text(summary.scrollEvents || 0);
+
+                // Update status indicators
+                $('#tab-status')
+                    .text(summary.isCurrentlyBlurred ? 'Inactive' : 'Active')
+                    .css('color', summary.isCurrentlyBlurred ? '#e74c3c' : '#2ecc71');
+
+                // Update last active time
+                const lastActive = formatTimeAgo(summary.lastActiveTime);
+                $('#last-active').text(lastActive);
+
+                $('#blur-count').text(summary.blurCount || 0);
+                $('#idle-time').text(summary.idleTimeFormatted || '0s');
+
+                // Create detailed log entry
+                const activityLevel = getActivityLevel(summary);
+                const logEntry = `
+                    <div style="margin-bottom: 12px; padding: 10px; background: ${summary.isCurrentlyBlurred ? '#fff5f5' : '#f8fff5'}; border-radius: 4px;">
+                        <div style="font-weight: bold; color: #2c3e50;">
+                            ${new Date().toLocaleTimeString()}
+                        </div>
+                        <div style="margin: 5px 0;">
+                            <span style="color: ${summary.isCurrentlyBlurred ? '#e74c3c' : '#2ecc71'}">●</span>
+                            Status: ${summary.isCurrentlyBlurred ? 'Inactive' : 'Active'}
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; font-size: 0.9em;">
+                            <div>Screen Time: ${summary.screenTimeFormatted || '0s'}</div>
+                            <div>Idle: ${summary.idleTimeFormatted || '0s'}</div>
+                            <div>Clicks: ${summary.mouseClicks || 0}</div>
+                            <div>Keys: ${summary.keystrokes || 0}</div>
+                        </div>
+                        <div style="margin-top: 5px; font-style: italic;">
+                            ${activityLevel}
+                        </div>
+                    </div>
+                `;
+
+                $('#log-entries').prepend(logEntry);
+
+                // Keep only last 50 entries to manage memory
+                const entries = $('#log-entries').children();
+                if (entries.length > 50) {
+                    entries.slice(50).remove();
+                }
+            }
+
+            $('#start-tracking').click(function () {
+                const interval = parseInt($('#summary-interval').val());
+
+                // Update button states
+                $(this).prop('disabled', true);
+                $('#stop-tracking').prop('disabled', false);
+                $('#summary-interval').prop('disabled', true);
+
+                // Initialize tracking
+                activityTracker = $('#tracking-stats').trackUserActivity({
+                    summaryInterval: interval,
+                    trackScreenTime: true,
+                    trackBlur: true,
+                    trackMouse: true,
+                    trackKeyboard: true,
+                    trackScroll: true,
+                    onSummary: updateTrackingUI
+                });
+
+                // Reset stats and log
+                $('#live-stats span, #status-stats span').text('0');
+                $('#tab-status').text('Active').css('color', '#2ecc71');
+                $('#last-active').text('Now');
+                $('#log-entries').empty();
+
+                // Add initial log entry
+                $('#log-entries').prepend(`
+                    <div style="margin-bottom: 12px; padding: 10px; background: #f0f9ff; border-radius: 4px;">
+                        <div style="font-weight: bold; color: #2c3e50;">
+                            ${new Date().toLocaleTimeString()}
+                        </div>
+                        <div style="color: #3498db;">
+                            Started Activity Tracking (${interval / 1000}s interval)
+                        </div>
+                    </div>
+                `);
+            });
+
+            $('#stop-tracking').click(function () {
+                if (!activityTracker) return;
+
+                // Get final metrics
+                const finalMetrics = activityTracker.getCurrentMetrics();
+                updateTrackingUI(finalMetrics);
+
+                // Stop tracking
+                activityTracker.stopTracking();
+                activityTracker = null;
+
+                // Update button states
+                $(this).prop('disabled', true);
+                $('#start-tracking').prop('disabled', false);
+                $('#summary-interval').prop('disabled', false);
+
+                // Add final summary entry
+                $('#log-entries').prepend(`
+                    <div style="margin-bottom: 12px; padding: 10px; background: #fff5f5; border-radius: 4px;">
+                        <div style="font-weight: bold; color: #2c3e50;">
+                            ${new Date().toLocaleTimeString()}
+                        </div>
+                        <div style="color: #e74c3c;">
+                            Tracking Stopped
+                        </div>
+                        <div style="margin-top: 5px; font-size: 0.9em;">
+                            Final Stats:
+                            <ul style="margin: 5px 0; padding-left: 20px;">
+                                <li>Total Time: ${finalMetrics.screenTimeFormatted || '0s'}</li>
+                                <li>Total Clicks: ${finalMetrics.mouseClicks || 0}</li>
+                                <li>Total Keystrokes: ${finalMetrics.keystrokes || 0}</li>
+                                <li>Blur Events: ${finalMetrics.blurCount || 0}</li>
+                            </ul>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Smart Table Demo
+            const mockData = Array.from({ length: 100 }, (_, i) => ({
+                id: i + 1,
+                name: `User ${i + 1}`,
+                email: `user${i + 1}@example.com`,
+                status: Math.random() > 0.3 ? 'active' : 'inactive',
+                role: ['Admin', 'User', 'Editor'][Math.floor(Math.random() * 3)],
+                lastLogin: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
+                score: Math.floor(Math.random() * 100)
+            }));
+            debugger;
+            $('#smartTableDemo').smartTable({
+                columns: [
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        sortable: true,
+                        width: '80px'
+                    },
+                    {
+                        field: 'name',
+                        title: 'Name',
+                        sortable: true,
+                        formatter: (value) => `<strong>${value}</strong>`
+                    },
+                    {
+                        field: 'email',
+                        title: 'Email',
+                        sortable: true,
+                        formatter: (value) => `<a href="mailto:${value}">${value}</a>`
+                    },
+                    {
+                        field: 'status',
+                        title: 'Status',
+                        sortable: true,
+                        formatter: (value) => `<span class="status-${value}">${value}</span>`
+                    },
+                    {
+                        field: 'role',
+                        title: 'Role',
+                        sortable: true
+                    },
+                    {
+                        field: 'lastLogin',
+                        title: 'Last Login',
+                        sortable: true,
+                        formatter: (value) => new Date(value).toLocaleString()
+                    },
+                    {
+                        field: 'score',
+                        title: 'Score',
+                        sortable: true,
+                        formatter: (value) => `${value}%`,
+                        footer: 'Average: 50%'
+                    }
+                ],
+                data: mockData,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50],
+                tableClass: 'modern-table',
+                rowClass: 'table-row',
+                headerClass: 'table-header',
+                footerClass: 'table-footer',
+                selectedRowClass: 'row-selected',
+                hoverClass: 'row-hover',
+
+                rowClassFormatter: (row) => {
+                    if (row.score < 30) return 'low-score';
+                    if (row.score > 70) return 'high-score';
+                    return '';
+                },
+
+                onRowClick: (rowData, index, event) => {
+                    console.log('Clicked row:', rowData);
+                },
+
+                onSort: (field, order) => {
+                    console.log(`Sorted by ${field} in ${order} order`);
+                },
+
+                onPageChange: (page) => {
+                    console.log(`Changed to page ${page}`);
+                },
+
+                onSearch: (term) => {
+                    console.log(`Searching for: ${term}`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
