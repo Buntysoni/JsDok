@@ -44,9 +44,9 @@ A powerful, lightweight JavaScript library for modern DOM manipulation, animatio
 <script src="jsdok.min.js"></script>
 ```
 
-### CDN (Coming Soon)
+### CDN
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jsdok@0.1.0-beta.1/dist/jsdok.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/buntysoni/jsdok@v0.1.0-beta.1/jsdok.min.js"></script>
 ```
 
 ## Basic Usage
