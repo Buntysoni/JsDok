@@ -26,7 +26,17 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 0px;
+        }
+
+        h5 {
+            color: #333;
+            text-align: center;
+            margin-top: 0px;
             margin-bottom: 30px;
+            background-color: yellow;
+            width: 149px;
+            margin: 0 auto;
         }
 
         .section {
@@ -428,12 +438,48 @@
             color: #2563eb;
             text-decoration: underline;
         }
+
+        .example-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .result-box {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f1f3f5;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+
+        .parent-element {
+            border: 2px solid #3498db;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .sibling {
+            background: #e1e8f0;
+            margin: 5px 0;
+            padding: 5px;
+        }
+
+        .target-element {
+            background: #2ecc71;
+            color: white;
+            padding: 5px;
+            margin: 5px 0;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>JsDok Library Demo</h1>
+        <h5>v 0.1.0-beta.2</h5>
 
         <div class="section">
             <h2>Basic DOM Manipulation</h2>
@@ -720,10 +766,69 @@
             <h2>Smart Table Demo</h2>
             <div id="smartTableDemo"></div>
         </div>
+
+        <div class="section">
+            <h2>DOM Traversal & Manipulation Examples</h2>
+
+            <!-- DOM Traversal -->
+            <div class="subsection">
+                <h3>DOM Traversal</h3>
+                <div class="example-container">
+                    <div class="parent-element">
+                        <div class="sibling">Sibling 1</div>
+                        <div class="target-element">Target Element</div>
+                        <div class="sibling">Sibling 2</div>
+                        <div class="sibling">Sibling 3</div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="find-closest">Find Closest</button>
+                    <button id="find-siblings">Find Siblings</button>
+                    <button id="get-first">Get First</button>
+                    <button id="get-last">Get Last</button>
+                    <button id="get-eq">Get Index 2</button>
+                </div>
+                <div id="traversal-result" class="result-box"></div>
+            </div>
+
+            <!-- DOM Manipulation -->
+            <div class="subsection">
+                <h3>DOM Manipulation</h3>
+                <div class="example-container">
+                    <div id="insert-target">Target for insertion</div>
+                    <div id="manipulation-content">Content to manipulate</div>
+                </div>
+                <div class="buttons">
+                    <button id="insert-before">Insert Before</button>
+                    <button id="insert-after">Insert After</button>
+                    <button id="wrap-element">Wrap Element</button>
+                    <button id="wrap-inner">Wrap Inner</button>
+                    <button id="unwrap-element">Unwrap</button>
+                </div>
+                <div id="manipulation-result" class="result-box"></div>
+            </div>
+
+            <!-- Dimensions & Scroll -->
+            <div class="subsection">
+                <h3>Dimensions & Scroll</h3>
+                <div class="example-container">
+                    <div id="dimension-box"
+                        style="width: 200px; height: 150px; padding: 20px; margin: 10px; border: 5px solid #ccc; overflow: auto;">
+                        <div style="height: 300px;">Scrollable content</div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="get-dimensions">Get Dimensions</button>
+                    <button id="scroll-to">Scroll To Bottom</button>
+                    <button id="get-scroll">Get Scroll Position</button>
+                </div>
+                <div id="dimension-result" class="result-box"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Include JsDok library -->
-    <script src="https://cdn.jsdelivr.net/gh/buntysoni/jsdok@v0.1.0-beta.1/jsdok.min.js"></script>
+    <script src="jsdok.js"></script>
 
     <!-- Demo script -->
     <script>
@@ -1443,6 +1548,92 @@
                 onSearch: (term) => {
                     console.log(`Searching for: ${term}`);
                 }
+            });
+
+            // DOM Traversal Examples
+            $('#find-closest').click(function () {
+                const closest = $('.target-element').closest('.parent-element');
+                $('#traversal-result').text(`Found closest: ${closest[0].className}`);
+                closest.highlight();
+            });
+
+            $('#find-siblings').click(function () {
+                const siblings = $('.target-element').siblings();
+                $('#traversal-result').text(`Found ${siblings.length} siblings`);
+                siblings.highlight('#ffcccb');
+            });
+
+            $('#get-first').click(function () {
+                const first = $('.sibling').first();
+                $('#traversal-result').text(`First sibling: ${first.text()}`);
+                first.highlight('#98FB98');
+            });
+
+            $('#get-last').click(function () {
+                const last = $('.sibling').last();
+                $('#traversal-result').text(`Last sibling: ${last.text()}`);
+                last.highlight('#DDA0DD');
+            });
+
+            $('#get-eq').click(function () {
+                const eq2 = $('.sibling').eq(2);
+                $('#traversal-result').text(`Element at index 2: ${eq2.text()}`);
+                eq2.highlight('#87CEEB');
+            });
+
+            // DOM Manipulation Examples
+            $('#insert-before').click(function () {
+                const newElement = $('<div>').text('Inserted Before').css('background', '#ffd700');
+                newElement.insertBefore('#insert-target');
+                $('#manipulation-result').text('Element inserted before target');
+            });
+
+            $('#insert-after').click(function () {
+                const newElement = $('<div>').text('Inserted After').css('background', '#98fb98');
+                newElement.insertAfter('#insert-target');
+                $('#manipulation-result').text('Element inserted after target');
+            });
+
+            $('#wrap-element').click(function () {
+                $('#manipulation-content').wrapAll('<div class="wrapper" style="border: 2px dashed #ff6b6b; padding: 10px;" />');
+                $('#manipulation-result').text('Content wrapped with new element');
+            });
+
+            $('#wrap-inner').click(function () {
+                $('#manipulation-content').wrapInner('<span style="background: #ffd93d; padding: 3px;" />');
+                $('#manipulation-result').text('Inner content wrapped');
+            });
+
+            $('#unwrap-element').click(function () {
+                $('.wrapper').children().unwrap();
+                $('#manipulation-result').text('Element unwrapped');
+            });
+
+            // Dimensions & Scroll Examples
+            $('#get-dimensions').click(function () {
+                const box = $('#dimension-box');
+                const dimensions = `
+                    Inner Width: ${box.innerWidth()}px
+                    Inner Height: ${box.innerHeight()}px
+                    Outer Width: ${box.outerWidth(true)}px
+                    Outer Height: ${box.outerHeight(true)}px
+                `;
+                $('#dimension-result').html(dimensions.replace(/\n/g, '<br>'));
+            });
+
+            $('#scroll-to').click(function () {
+                const box = $('#dimension-box');
+                box.scrollTop(box[0].scrollHeight);
+                $('#dimension-result').text('Scrolled to bottom');
+            });
+
+            $('#get-scroll').click(function () {
+                const box = $('#dimension-box');
+                const scrollInfo = `
+                    Scroll Top: ${box.scrollTop()}px
+                    Scroll Left: ${box.scrollLeft()}px
+                `;
+                $('#dimension-result').html(scrollInfo.replace(/\n/g, '<br>'));
             });
         });
     </script>
