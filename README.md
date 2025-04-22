@@ -28,7 +28,7 @@ With a modular architecture, minimal footprint, and intuitive API, JsDok empower
 
 ## Features
 
-- 🚀 **Lightweight Core**: Only 28KB minified
+- 🚀 **Lightweight Core**: Only 48KB minified
 - 🎨 **Rich Animations**: Built-in fade, slide, shake, pulse effects
 - 🔄 **DOM Manipulation**: jQuery-like syntax for easy DOM operations
 - 📊 **Smart Components**: Advanced table, word cloud, progress bar
