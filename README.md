@@ -4,8 +4,8 @@ JsDok is a powerful yet lightweight JavaScript library designed for modern web d
 
 With a modular architecture, minimal footprint, and intuitive API, JsDok empowers developers to build fast, dynamic, and responsive web applications — all without the bloat of larger frameworks. It's the perfect tool for developers who want simplicity, speed, and flexibility in one elegant package.
 
-![Version](https://img.shields.io/badge/version-0.1.0--beta.1-blue.svg)
-![Size](https://img.shields.io/badge/size-28kb_minified-green.svg)
+![Version](https://img.shields.io/badge/version-0.1.0--beta.2-blue.svg)
+![Size](https://img.shields.io/badge/size-48kb_minified-green.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Demo](https://img.shields.io/badge/demo-live-green.svg)](https://buntysoni.github.io/JsDok/)
 
