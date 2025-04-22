@@ -51,7 +51,7 @@ With a modular architecture, minimal footprint, and intuitive API, JsDok empower
 ### CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/buntysoni/jsdok@v0.1.0-beta.1/jsdok.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/buntysoni/jsdok@v0.1.0-beta.2/dist/jsdok.min.js"></script>
 ```
 
 ## Basic Usage
