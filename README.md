@@ -7,6 +7,7 @@ With a modular architecture, minimal footprint, and intuitive API, JsDok empower
 ![Version](https://img.shields.io/badge/version-0.1.0--beta.1-blue.svg)
 ![Size](https://img.shields.io/badge/size-28kb_minified-green.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Demo](https://img.shields.io/badge/demo-live-green.svg)](https://buntysoni.github.io/JsDok/)
 
 ## Table of Contents
 
